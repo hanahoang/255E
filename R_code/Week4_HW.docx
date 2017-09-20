@@ -1,0 +1,31 @@
+---
+title: "Base Salary for Register Nurse"
+author: "Hana"
+date: "September 19, 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center')
+```
+
+## Base Salary of Registered Nurse
+
+This is an R markdown document to show the Base Salary of Regstered Nurse in California State University.
+
+### Setting the workig directory 
+Seting the directory to 
+
+```{r workingdir}
+#setwd("C:/Users/Hana/255E")
+```
+
+### Importing data
+Import the csv file from the file directory
+
+```{r importingdata , echo=TRUE}
+df = read.csv("../data/california-state-university-2015.csv")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

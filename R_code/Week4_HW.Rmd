@@ -1,0 +1,100 @@
+---
+title: "Base Salary for Registered Nurse"
+author: "Hana"
+date: "September 19, 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center')
+```
+
+## Setting the work directory
+I set the working directory to upload the file 
+
+```{r workingdir, echo= TRUE}
+setwd("C:/Users/Hana/255E")
+```
+
+### Upload the file
+I uploaded the CSV file from the file directory
+
+```{r fileupload, echo=TRUE}
+df = read.csv("data/california-state-university-2015.csv")
+```
+
+## Set different levels for job title
+I set up the different level of job title so I can easily find "Registered Nurse"
+
+```{r joblevel, echo= TRUE}
+levels(df$Job.Title)
+```
+
+### Registered Nurse I
+I pulled out the column that contains "Registered Nurse I" and all of the row associate with it.
+
+```{r RNI, echo= TRUE}
+RNI = df[df$Job.Title == "REGISTERED NURSE I", ]
+```
+
+### Registered Nurse II
+I pulled out the column that contains "Registered Nurse II" and all of the row associate with it.
+
+```{r RNII, echo= TRUE}
+RNII = df[df$Job.Title == "REGISTERED NURSE II", ]
+```
+
+### Registered Nurse III
+I pulled out the column that contains "Registered Nurse III" and all of the row associate with it.
+
+```{r RNII, echo= TRUE}
+RNIII = df[df$Job.Title == "REGISTERED NURSE III", ]
+```
+
+## Merging the data sets
+Since RNI, RNII and RNIII had the same column and fifferent row, I combined them into RNall.
+
+```{r bind, echo= TRUE}
+RNall = rbind(RNI, RNII, RNIII)
+```
+
+### Drop other levels
+Since RNall contain other job level, I dropped the unnecessary one, and only keep RNI, RNII and RNIII
+
+```{r droplevel, echo= TRUE}
+RNall = droplevels(RNall)
+```
+
+## Box plot
+I created a box plot to show the base salary of 3 different level of registered nurse- RNI, RNII and RNIII.
+
+```{r boxplot, echo= TRUE, fig.cap="Base Salary for Registered Nurse"}
+boxplot(Base.Pay~Job.Title,
+        data = RNall, xlab = 'Job Title', ylab = 'Base Salary',
+        col = c("aquamarine", "turquoise", "palegreen2"),
+        main = "Base Salary for Registered Nurse")
+```
+
+## Average bease pay 
+I calculated the average base pay for each level of registered nurse
+
+```{r aggregate, echo= TRUE}
+mean_salary= aggregate(Base.Pay~Job.Title,
+          data = RNall, FUN = mean)
+mean_salary
+```
+
+### Formating table out of the data frame
+I used the 'kable' function to make a nicely formatted table out of the data frame
+
+```{r meantable, echo= TRUE, results='asis'}
+kable(mean_salary, caption = 'Average Base Pay for Registered Nurse')
+```
+
+
+
+
+
+
+
