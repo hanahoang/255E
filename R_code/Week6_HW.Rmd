@@ -173,7 +173,10 @@ Create a plot function to plot the TideHT and TimeUTC variables.
 # Create a plotting function for the tide data
 plotTides <- function(df){
   plot(x= df$TimeUTC, y= df$TideHT, type= "l",
-       xlab= "Date", ylab= "Tide Ht,m")
+       xlab= "Date", ylab= "Tide Ht,m",
+       xaxt= "n", col = "blue",
+       main = "Tide Heigth v. Date")
+  axis(side = 1, at=pretty(df$TimeUTC), labels= format(pretty(df$TimeUTC), format= "%b-%d-%Y" ))
 }
 
 ```
@@ -182,19 +185,26 @@ plotTides <- function(df){
 
 ### January 
 
-```{r januarydata, cache= TRUE}
-mo1 = NOAAfunction(9413450, 20080101, 20080128)
+```{r januarydata, cache= FALSE}
+mo1 = NOAAfunction(9413450, 20080101, 20080131)
 
 ```
 ### February
 
-```{r februarydata, cache= TRUE}
-mo2 = NOAAfunction(9413450, 20080201, 20080228)
+```{r februarydata, cache= FALSE}
+mo2 = NOAAfunction(9413450, 20080201, 20080229)
 ```
 ### March
 
-```{r}
+```{r marchdata, cache= FALSE}
+mo3 = NOAAfunction(9413450, 20080301, 20080328)
+```
+## Plot the 3 month
 
+```{r}
+moAll= rbind(mo1, mo2, mo3)
+
+plotTides(moAll)
 ```
 
 
