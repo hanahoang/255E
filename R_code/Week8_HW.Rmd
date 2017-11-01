@@ -1,0 +1,118 @@
+---
+title: "Week8_HW"
+author: "Hana"
+date: "October 11, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Upload temperature_trials files
+```{r temptrialfile}
+fnames= dir("../data/temperature_trials", 
+            pattern = "*.csv", full.names = TRUE)
+
+for (i in 1: length(fnames)){
+  temp = read.csv(fnames[i])
+  res$DateTime = as.POSIXct(res$DateTime, origin = '1970-1-1', tz = "")
+  temp$elapsedTime = difftime(temp$DateTime, temp$DateTime[1], unit = 'mins')
+  temp$elapsedTimeMin = as.numeric(temp$elapsedTime)
+  ###########
+  # grab the trial number
+  loc = regexpr(pattern = "Trial[0-9]*", text = fnames[i])
+  
+  trialNumber = as.numeric(substr(fnames[i], start = loc[[1]][1]+5,
+       stop = loc[[1]][1] + attr(loc,'match.length')-1))
+  temp$trialNumber = trialNumber
+  
+  # rbind the new data in temp to the previous data in res
+  if(i == 1){
+    res = temp
+  } else{
+    res = rbind(res, temp)
+  }
+}
+
+
+res$DateTime = as.POSIXct(res$DateTime, origin = '1970-1-1', tz = "")
+```
+
+### make initial plot
+- use for loop to add the other trial' line
+```{r}
+# make initial plot for trial 1
+# plot(TC0~elapsedTime, data = res[res$trialNumber ==1],...) 
+firstTrial = 1
+plot(x = res$elapsedTimeMin[res$trialNumber == firstTrial], 
+     y = res$TC0[res$trialNumber == firstTrial], type = "l",
+     xlab = "Elapsed time, mins",
+     ylab = "temperature, C",
+     las = 1,
+     xlim = c(0, max(res$elapsedTimeMin)),
+     ylim = c(min(res$TC0), max(res$TC0)))
+# write text in a margin of the plot
+mtext(text = "Channel TC0 for each trial", side =3, line = 1, cex = 1.5, adj = )
+# use for loop to add the other trials' line
+trialNums = unique(res$trialNumber)
+for (y in 2:length(trialNums)){
+  lines(x= res$elapsedTimeMin[res$trialNumber == trialNums[y]], 
+       y = res$TC0[res$trialNumber == trialNums[y]],
+       col = y)
+  
+}
+```
+
+
+```{r}
+library(xlsx)
+heatingInfo = read.xlsx("../data/Heating_trial_info.xlsx", sheetIndex = 1)
+heatingInfo$TCchannel = as.character(heatingInfo$TCchannel)
+```
+
+## pull out the collumn number in Heating info 1
+```{r}
+# res$TC0
+# or res[ , 3]
+
+
+# making a for loop that pick out ln50
+for(x in 1:nrow(heatingInfo)){
+  
+  # to test wheather the row has ln50
+  if(heatingInfo$TCLocation[x] == "ln50"){
+   chloc = regexpr(pattern = "[[:digit:]]", heatingInfo$TCchannel[x])
+   chNum = substr(heatingInfo$TCchannel[x],
+               start = chloc[[1]][1],
+               stop = chloc[[1]][1])
+   chName = paste("TC", chNum, sep = "") 
+   trialNumber = heatingInfo$TrialNumber[x]
+   
+   temps = res[res$trialNumber == trialNumber, chName] # column name can change
+   times = res$elapsedTimeMin[res$trialNumber == trialNumber] #column name is constant
+    
+  }
+}
+
+
+```
+
+### Make plo for the location of ln50 in each trial.
+```{r}
+plot(x = res$elapsedTimeMin[res$trialNumber == 1], 
+     y = res[res$trialNumber == 1, chName] , type = 'n',
+     xlab = "Elapsed time, mins",
+     ylab = "Temperature, C",
+     las = 1,
+     xlim = c(0, max(res$elapsedTimeMin)),
+     ylim = c(min(res$TC0), max(res$TC0)),
+     main = "Location ln50 for each Trial NUmber")
+trialNumber = unique(heatingInfo$TrialNumber)
+for (z in 1:length(trialNums)){
+  lines(x= res$elapsedTimeMin[res$trialNumber == trialNumber[z]], 
+       y = res[res$trialNumber == trialNumber[z], chName],
+       col = z)
+}
+```
+

@@ -1,0 +1,74 @@
+---
+title: "Week 8 code"
+author: "Hana"
+date: "October 11, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## importing files from a folder using loop
+```{r importingfile}
+
+fnames= dir("../data/temperature_trials", 
+            pattern = "*.csv", full.names = TRUE)
+
+for (i in 1: length(fnames)){
+  #open each file in turn
+  temp = read.csv(fnames[i])
+  # temp$TrialNumber = 
+  if(i == 1){
+    res = temp
+  } else{
+    res = rbind(res, temp)
+  }
+}
+
+res$DateTime = as.POSIXct(res$DateTime, origin = '1970-1-1', tz = "")
+
+```
+## matching meta data
+```{r matchingfiles}
+for(i in 1:length(fnames)){
+loc = regexpr(pattern = "Trial[0-9]*", text = fnames[i])
+
+trialNumber = as.numeric(substr(fnames[i], start = loc[[1]][1]+5,
+       stop = loc[[1]][1] + attr(loc,'match.length')-1))
+print(trialNumber)
+}
+
+```
+## import mussel info
+```{r importMusselInfo}
+library(xlsx)
+info = read.xlsx("../data/Mussel_Info.xlsx", sheetIndex = 1)
+
+```
+
+```{r convertTagID}
+info$TagColor= as.character(info$TagColor)
+
+names(info)[1] = 'TagColor'
+info$TagColor
+
+substr(info$TagColor, start = 1, stop = 1)
+
+for(i in 1:nrow(info)){
+  #extract the 1st letter of the color, for the current row i
+  color = substr(info$TagColor[i], start = 1, stop = 1)
+  # get the location of a 1 or 2 digit number in the current row i of tag color
+  loc = regexpr(pattern = "[0-9]*$", text = info$TagColor[i])
+  # extract the digits from info$TagColor[i]
+  digits= substr(info$TagColor[i], start = loc[[1]][1], 
+      stop = loc[[1]] + attr(loc,'match.length')-1)
+#paste the numer and letter together, w/ no space seperating them
+  tagID = paste(digits,color, sep="")
+  # print just to check if it's work
+  print(tagID)
+  # Write the new tagID into its own column in info using the current
+  #row to make sure it matches up woth whatever row i we are on
+  info$TagID[i] = tagID
+}
+```
+

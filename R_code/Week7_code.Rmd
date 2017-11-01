@@ -1,0 +1,80 @@
+---
+title: "Week 7 Scratch"
+author: "Hana"
+date: "October 4, 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r test1}
+test1 = "The current year is 2016"
+
+my_pattern = "[xqb"
+
+my_pattern = "[0-9]"
+
+my_pattern = "[zxqy]"
+
+grepl(pattern = my_pattern, test1)
+
+gregexpr(my_pattern, test1)
+
+output = gregexpr(my_pattern, test1)
+
+temp = gregexpr(my_pattern, test1)
+
+string_position = temp[[1]]
+
+gregexpr("[[:blank:]]", test1)
+
+grepl(pattern = "[[:upper:][:digit:]]", test1)
+
+regexpr(pattern= "[[:blank:]]", test1) #find the position of the 1st blank
+
+temp = regexpr(pattern = "[[:blank:]]", test1)
+first_space = temp[[1]][1]
+
+
+
+my_pattern = "[[:lower:].[:digit:]]" #include everything in the conditioning racket
+grepl(my_pattern, test1)
+
+gregexpr(my_pattern, test1)[[1]][1]
+
+
+my_pattern = "[[:lower:]].[[:digit:]]" #the right way for the excercise
+grepl(my_pattern, test1)
+
+gregexpr(my_pattern, test1)[[1]][1]
+
+my_pattern = "\\s[[:lower:]][[:lower:]]\\s" #excercise 7
+loc= gregexpr(my_pattern, test1) [[1]][1]
+loc
+
+test2 = sub(my_pattern, replacement = " is not " , test1)
+
+my_pattern= "\\s[[:lower:]]{2}\\s"
+gregexpr(my_pattern, test1) [[1]][1]
+
+#excercise 9
+my_pattern= "\\d{4}"
+temp = gregexpr(my_pattern, test2)
+string_pos4= temp[[1]][1]
+
+# excercise 10
+substr(test2, start = string_pos4, stop = string_pos4 + 1)
+substr(test2, start= temp[[1]][1], stop= temp[[1]][1] + attr(temp[[1]], 'match.length')-1)
+substr(test2, start= temp[[1]][1], stop= nchar(test2))
+
+string_pos4= substr(test2, start= temp[[1]][1], stop = nchar(test2))
+
+
+``` 
+
+```{r}
+
+```
+

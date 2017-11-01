@@ -1,0 +1,65 @@
+---
+title: "Final Portfolio"
+author: "Hana"
+date: "October 25, 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Abstract
+
+The extensive sagebrush ecosystems of the western United States provide a model of complex interactions at the chemical level between plants, herbivores, and pests. A better understanding of these chemical interactions could provide insight for development of natural products for use in combatting pests and diseases in humans and in the agricultural industry. For example, Greater sage-grouse (Centrocercus urophasianus), an endangered species candidate, feeds mainly on sagebrush, which in turn produces a diversity of chemical compounds to deter herbivores and pests. Despite lower crude protein in three-tip sagebrush (Artemisia tripartia) than Wyoming big sagebrush (Artemisia tridenta ssp. wyomingensis), sage-grouse consumed both species. We hypothesized that polyphenol content may explain dietary selection between and within each species. We found that Wyoming sagebrush had significantly higher total polyphenol levels than three-tip sagebrush. In some cases, total polyphenol levels in the same sagebrush species differed between foliage selected or avoided by grouse. High performance liquid chromatography (HPLC) was optimized to compare types and levels of individual polyphenols between and within species. HPLC-fractionated polyphenols were also used to screen for bioactive properties that could be exploited to combat pests and diseases in humans and in the agricultural industry.
+
+# Data Analysis
+
+## Importing excel file
+```{r importfile}
+library(xlsx)
+df = read.xlsx("../Final/phenolic_data.xlsx", sheetIndex = 1)
+
+```
+
+## Create a colume to calculate average phenolic concentration
+```{r}
+
+```
+
+## Sort the data by species (W v. 3T)
+```{r}
+
+```
+
+### Make a bar graph of average polyphenol concentration between 2 species
+```{r}
+
+```
+
+### T-test to compare the pholyphenol level between 2 species
+```{r}
+
+```
+
+## Sort the data Browsed v. Non-browsed
+```{r}
+
+```
+
+### Make a bar graph of average polyphenol between browsed v. non-browsed
+```{r}
+
+```
+
+### T-test to compare the polyphenol concetration between browsed v. non-browsed
+```{r}
+
+```
+
+## Make a graph that had browsed (W v. 3T) v. non-browsed (W v. 3T)
+```{r}
+
+```
+
+
