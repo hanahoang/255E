@@ -19,32 +19,42 @@ The extensive sagebrush ecosystems of the western United States provide a model 
 ```{r importfile}
 library(xlsx)
 df = read.xlsx("../Final/phenolic_data.xlsx", sheetIndex = 1)
+df$full_conc = as.numeric(as.character(df$full_conc))
+df$X1to5_dilution = as.numeric(as.character(df$X1to5_dilution))
 
 ```
 
 ## Create a colume to calculate average phenolic concentration
 ```{r}
-
+df$avg_conc = rowMeans(df[, c('full_conc','X1to5_dilution')])
 ```
 
 ## Sort the data by species (W v. 3T)
 ```{r}
+levels(df$species)
+wyoming = df[df$species == "W",]
+threetip = df[df$species == "3T",]
+newspecies = droplevels(df[df$species == "W+3T"])
 
 ```
 
 ### Make a bar graph of average polyphenol concentration between 2 species
 ```{r}
+boxplot(df$avg_conc[df$species == "W"], df$avg_conc[df$species == "3T"])
 
+boxplot(avg_conc~species, data = df)
 ```
 
 ### T-test to compare the pholyphenol level between 2 species
 ```{r}
-
+t.test(avg_conc~species, data = df)
 ```
 
 ## Sort the data Browsed v. Non-browsed
 ```{r}
-
+levels(df$browse)
+browse = df[df$browse == "B", ]
+nonbrowse = df[df$browse == "NB", ]
 ```
 
 ### Make a bar graph of average polyphenol between browsed v. non-browsed
