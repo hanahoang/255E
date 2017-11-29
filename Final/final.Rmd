@@ -34,7 +34,7 @@ df$avg_conc = rowMeans(df[, c('full_conc','X1to5_dilution')])
 levels(df$species)
 wyoming = df[df$species == "W",]
 threetip = df[df$species == "3T",]
-newspecies = droplevels(df[df$species == "W+3T"])
+newspecies = droplevels(newspecies)
 
 ```
 
@@ -59,7 +59,10 @@ nonbrowse = df[df$browse == "NB", ]
 
 ### Make a bar graph of average polyphenol between browsed v. non-browsed
 ```{r}
-
+boxplot(avg_conc~browse, data = df,
+        ylab = "Pholyphenol concentration (ug/uL)",
+        xlab = "Samples",
+        main = "Polyphenol Concentration Between Browsed and Non-Browsed")
 ```
 
 ### T-test to compare the polyphenol concetration between browsed v. non-browsed
