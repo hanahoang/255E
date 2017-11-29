@@ -62,16 +62,29 @@ nonbrowse = df[df$browse == "NB", ]
 boxplot(avg_conc~browse, data = df,
         ylab = "Pholyphenol concentration (ug/uL)",
         xlab = "Samples",
-        main = "Polyphenol Concentration Between Browsed and Non-Browsed")
+        main = "Polyphenol Concentration Between Browsed and Non-Browsed",
+        col = c("paleturquoise1", "palevioletred1"))
 ```
 
 ### T-test to compare the polyphenol concetration between browsed v. non-browsed
 ```{r}
-
+browsedTtest = t.test(avg_conc~browse, data = df)
+print(browsedTtest)
 ```
 
 ## Make a graph that had browsed (W v. 3T) v. non-browsed (W v. 3T)
 ```{r}
+boxplot(avg_conc~browse, data = wyoming,
+        ylab = "Pholyphenol concentration (ug/uL)",
+        xlab = "Samples",
+        main = "Polyphenol Concentration Between Browsed and Non-Browsed in Wyoming",
+        col = c("turquoise3", "turquoise4"))
+boxplot(avg_conc~browse, data = threetip,
+        ylab = "Pholyphenol concentration (ug/uL)",
+        xlab = "Samples",
+        main = "Polyphenol Concentration Between Browsed and Non-Browsed in Three-Tips",
+        col = c("seagreen3", "seagreen4"))
+
 
 ```
 
