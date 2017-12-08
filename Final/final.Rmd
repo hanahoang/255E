@@ -24,7 +24,7 @@ df$X1to5_dilution = as.numeric(as.character(df$X1to5_dilution))
 
 ```
 
-## Create a colume to calculate average phenolic concentration
+## Create a column to calculate average phenolic concentration
 ```{r}
 df$avg_conc = rowMeans(df[, c('full_conc','X1to5_dilution')])
 ```
@@ -34,36 +34,33 @@ df$avg_conc = rowMeans(df[, c('full_conc','X1to5_dilution')])
 levels(df$species)
 wyoming = df[df$species == "W",]
 threetip = df[df$species == "3T",]
+newspecies = df[df$species != "W+3T ",]
 newspecies = droplevels(newspecies)
 
 ```
 
-### Make a bar graph of average polyphenol concentration between 2 species
+### Make a boxplot of average polyphenol concentration between 2 species
 ```{r}
-boxplot(df$avg_conc[df$species == "W"], df$avg_conc[df$species == "3T"])
-
-boxplot(avg_conc~species, data = df)
+boxplot(avg_conc~species, data = newspecies,
+        ylab = "Pholyphenol concentration (ug/uL)",
+        xlab = "Samples",
+        main = "Wyoming v. Three-Tip\n Polyphenol Concentration",
+        col = c("skyblue1", "pink1"))
 ```
 
 ### T-test to compare the pholyphenol level between 2 species
 ```{r}
-t.test(avg_conc~species, data = df)
+t.test(avg_conc~species, data = newspecies)
 ```
 
-## Sort the data Browsed v. Non-browsed
-```{r}
-levels(df$browse)
-browse = df[df$browse == "B", ]
-nonbrowse = df[df$browse == "NB", ]
-```
-
-### Make a bar graph of average polyphenol between browsed v. non-browsed
+### Make a boxplot of average polyphenol between browsed v. non-browsed
 ```{r}
 boxplot(avg_conc~browse, data = df,
         ylab = "Pholyphenol concentration (ug/uL)",
         xlab = "Samples",
-        main = "Polyphenol Concentration Between Browsed and Non-Browsed",
-        col = c("paleturquoise1", "palevioletred1"))
+        main = "Browsed v. Non-Browsed\n Polyphenol Concentration",
+        col = c("paleturquoise1", "palevioletred1"),
+        names = c("Browsed", "Non-Browsed"))
 ```
 
 ### T-test to compare the polyphenol concetration between browsed v. non-browsed
@@ -72,20 +69,36 @@ browsedTtest = t.test(avg_conc~browse, data = df)
 print(browsedTtest)
 ```
 
-## Make a graph that had browsed (W v. 3T) v. non-browsed (W v. 3T)
+## Make a boxplot of browsed w. non-browsed in Wyoming
 ```{r}
 boxplot(avg_conc~browse, data = wyoming,
         ylab = "Pholyphenol concentration (ug/uL)",
-        xlab = "Samples",
-        main = "Polyphenol Concentration Between Browsed and Non-Browsed in Wyoming",
-        col = c("turquoise3", "turquoise4"))
-boxplot(avg_conc~browse, data = threetip,
-        ylab = "Pholyphenol concentration (ug/uL)",
-        xlab = "Samples",
-        main = "Polyphenol Concentration Between Browsed and Non-Browsed in Three-Tips",
-        col = c("seagreen3", "seagreen4"))
-
+        xlab = "Samples", 
+        main = "Browsed v. Non-Browsed\n Polyphenol Concentration in Wyoming",
+        col = c("turquoise3", "turquoise4"),
+        names = c("Browsed", "Non-Browsed"))
 
 ```
 
+### T-test to compare the polyphenol concetration between browsed v. non-browsed in Wyoming
+```{r}
+WbrowsedTtest = t.test(avg_conc~browse, data = wyoming)
+print(WbrowsedTtest)
+```
+
+## Make a boxplot of browsed v. non-browsed in Three-tip
+```{r}
+boxplot(avg_conc~browse, data = threetip,
+        ylab = "Pholyphenol concentration (ug/uL)",
+        xlab = "Samples",
+        main = "Browsed v. Non-Browsed\n Polyphenol Concentration in Three-tip",
+        col = c("seagreen3", "seagreen4"),
+        names = c("Browsed", "Non-Browsed"))
+```
+
+### T-test to compare the polyphenol concetration between browsed v. non-browsed in Three-Tip
+```{r}
+ThreeTbrowsedTtest = t.test(avg_conc~browse, data = threetip)
+print(ThreeTbrowsedTtest)
+```
 
